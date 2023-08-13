@@ -11,25 +11,25 @@ void error(const char *msg) {
     exit(1);
 }
 
-// Encrypt plaintext using key
 void encrypt(char *plaintext, char *key, char *ciphertext) {
     int plaintext_len = strlen(plaintext);
     int key_len = strlen(key);
 
     for (int i = 0; i < plaintext_len; i++) {
-        // Skip spaces in the plaintext
         if (plaintext[i] == ' ') {
-            ciphertext[i] = ' ';
-            continue;
-        }
+            ciphertext[i] = ' '; // Preserve spaces
+        } else {
+            int plain_value = plaintext[i] - 'A'; // Convert to numerical value (A=0, B=1, ...)
+            int key_value = key[i % key_len] - 'A'; // Repeating key
 
-        // Calculate modular addition and store in ciphertext
-        int plain_val = plaintext[i] - 'A'; // Convert to numerical value (A=0, B=1, ...)
-        int key_val = key[i % key_len] - 'A';
-        int cipher_val = (plain_val + key_val) % 27; // 26 letters + space
-        ciphertext[i] = cipher_val + 'A'; // Convert back to character
+            int encrypted_value = (plain_value + key_value) % 27; // Perform encryption
+            ciphertext[i] = encrypted_value + 'A'; // Convert back to character
+        }
     }
-    ciphertext[plaintext_len] = '\0';
+
+    ciphertext[plaintext_len] = '\0'; // Null-terminate the ciphertext
+
+    printf("%s\n", ciphertext);
 }
 
 int main(int argc, char *argv[]) {
