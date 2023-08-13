@@ -34,6 +34,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     fclose(plaintext_file);
+    
+    // Remove new line character from plaintext
+    plaintext[strcspn(plaintext, "\n")] = '\0';
 
     // Read key
     FILE *key_file = fopen(key_filename, "r");
@@ -48,6 +51,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     fclose(key_file);
+    
+    // Remove new line character from key
+    key[strcspn(key, "\n")] = '\0';
 
     // Check for bad characters in plaintext and key
     for (int i = 0; plaintext[i] != '\0'; i++) {
