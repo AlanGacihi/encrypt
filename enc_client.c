@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
     memset((char *)&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port);
-    serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1"); // localhost
+    serv_addr.sin_addr.s_addr = inet_addr("127.0.0.2"); // localhost
 
     if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         fprintf(stderr, "Error connecting to enc_server on port %d.\n", port);
