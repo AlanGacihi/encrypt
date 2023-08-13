@@ -79,7 +79,9 @@ int main(int argc, char *argv[]) {
             memset(key, 0, BUFFER_SIZE);
 
             recv(newsockfd, plaintext, BUFFER_SIZE, 0);
+            printf("[%d] Received message from client:\n%s\n", getpid(), plaintext);
             recv(newsockfd, key, BUFFER_SIZE, 0);
+            printf("[%d] Received key from client:\n%s\n", getpid(), key);
 
             encrypt(plaintext, key, ciphertext);
 
