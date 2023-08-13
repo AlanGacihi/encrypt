@@ -49,6 +49,27 @@ int main(int argc, char *argv[]) {
     }
     fclose(key_file);
 
+    // Check for bad characters in plaintext and key
+    for (int i = 0; plaintext[i] != '\0'; i++) {
+        if ((plaintext[i] < 'A' || plaintext[i] > 'Z') && plaintext[i] != ' ') {
+            fprintf(stderr, "Error: Invalid character in plaintext.\n");
+            return 1;
+        }
+    }
+
+    for (int i = 0; key[i] != '\0'; i++) {
+        if (key[i] < 'A' || key[i] > 'Z') {
+            fprintf(stderr, "Error: Invalid character in key.\n");
+            return 1;
+        }
+    }
+
+    // Check if key is shorter than plaintext
+    if (strlen(key) < strlen(plaintext)) {
+        fprintf(stderr, "Error: Key \'%s\' is too short\n", plaintext_filename);
+        return 1;
+    }
+
     // Connect to enc_server
     int sockfd;
     struct sockaddr_in serv_addr;
@@ -62,8 +83,10 @@ int main(int argc, char *argv[]) {
     serv_addr.sin_port = htons(port);
     serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1"); // localhost
 
-    if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-        error("ERROR connecting to enc_server");
+    if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+        fprintf(stderr, "Error connecting to enc_server on port %d.\n", port);
+        return 2; // Exit with error code 2 as specified
+    }
 
     // Send plaintext and key to enc_server
     send(sockfd, plaintext, strlen(plaintext), 0);
