@@ -98,9 +98,6 @@ int main(int argc, char *argv[]) {
             strncpy(key, separator + 1, key_length);
             key[key_length] = '\0'; // Null-terminate the key
 
-            printf("[%d] Received message from client:\n%s\n", getpid(), plaintext);
-            printf("[%d] Received key from client:\n%s\n", getpid(), key);
-
             encrypt(plaintext, key, ciphertext);
             send(newsockfd, ciphertext, strlen(ciphertext), 0);
 

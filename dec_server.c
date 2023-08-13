@@ -4,8 +4,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-#define BUFFER_SIZE 1024
-#define MAX_CONNECTIONS 5
+#define BUFFER_SIZE 2048
 
 void error(const char *msg) {
     perror(msg);
@@ -57,7 +56,7 @@ int main(int argc, char *argv[]) {
     if (bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
         error("ERROR on binding");
 
-    listen(sockfd, MAX_CONNECTIONS);
+    listen(sockfd, 5);
 
     clilen = sizeof(cli_addr);
     while (1) {
@@ -72,30 +71,48 @@ int main(int argc, char *argv[]) {
             // Child process
             close(sockfd);
 
-            // Verify client identity (dec_client)
-            // You'll need to implement this part
-            
-            // Receive ciphertext and key from client
-            char ciphertext[BUFFER_SIZE];
-            char key[BUFFER_SIZE];
+            char combined_data[BUFFER_SIZE * 2];
             char plaintext[BUFFER_SIZE];
+            char key[BUFFER_SIZE];
+            char ciphertext[BUFFER_SIZE];
 
-            memset(ciphertext, 0, BUFFER_SIZE);
+            memset(combined_data, 0, BUFFER_SIZE * 2);
+            memset(plaintext, 0, BUFFER_SIZE);
             memset(key, 0, BUFFER_SIZE);
-            
-            // Receive ciphertext and key using recv() from newsockfd
-            
-            // Perform decryption
+
+            recv(newsockfd, combined_data, BUFFER_SIZE * 2, 0);
+
+            // Split the combined data at the full stop
+            char *separator = strchr(combined_data, '.');
+            if (separator == NULL) {
+                fprintf(stderr, "[%d] Invalid combined data format.\n", getpid());
+                close(newsockfd);
+                exit(1);
+            }
+
+            // Calculate the lengths of ciphertext and key
+            size_t ciphertext_length = separator - combined_data;
+            size_t key_length = strlen(separator + 1);
+
+            // Extract ciphertext and key
+            strncpy(ciphertext, combined_data, ciphertext_length);
+            ciphertext[ciphertext_length] = '\0'; // Null-terminate the plaintext
+            strncpy(key, separator + 1, key_length);
+            key[key_length] = '\0'; // Null-terminate the key
+
+            printf("[%d] Received message from client:\n%s\n", getpid(), ciphertext);
+            printf("[%d] Received key from client:\n%s\n", getpid(), key);
+
             decrypt(ciphertext, key, plaintext);
-            
-            // Send plaintext back to client
-            // You'll need to use send() here
-            
+            send(newsockfd, plaintext, strlen(plaintext), 0);
+
             close(newsockfd);
             exit(0);
+
         } else {
             close(newsockfd);
         }
+
     }
 
     close(sockfd);
