@@ -80,12 +80,12 @@ int main(int argc, char *argv[]) {
 
             recv(newsockfd, plaintext, BUFFER_SIZE, 0);
             printf("[%d] Received message from client:\n%s\n", getpid(), plaintext);
-            recv(newsockfd, key, BUFFER_SIZE, 0);
-            printf("[%d] Received key from client:\n%s\n", getpid(), key);
+            //recv(newsockfd, key, BUFFER_SIZE, 0);
+            //printf("[%d] Received key from client:\n%s\n", getpid(), key);
 
-            encrypt(plaintext, key, ciphertext);
+            //encrypt(plaintext, key, ciphertext);
 
-            send(newsockfd, ciphertext, strlen(ciphertext), 0);
+            //send(newsockfd, ciphertext, strlen(ciphertext), 0);
 
             close(newsockfd);
             exit(0);

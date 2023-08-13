@@ -95,21 +95,16 @@ int main(int argc, char *argv[]) {
     }
 
     // Send plaintext and key to enc_server
-    printf("%s\n", plaintext);
-    int x1 = strlen(plaintext);
-    int x2 = strlen(key);
-    send(sockfd, &x1, sizeof(x1), 0);
     send(sockfd, plaintext, strlen(plaintext), 0);
-    send(sockfd, &x2, sizeof(x2), 0);
-    send(sockfd, key, strlen(key), 0);
+    //send(sockfd, key, strlen(key), 0);
 
     // Receive ciphertext from enc_server
-    char ciphertext[BUFFER_SIZE];
-    memset(ciphertext, 0, BUFFER_SIZE);
-    recv(sockfd, ciphertext, BUFFER_SIZE, 0);
+    //char ciphertext[BUFFER_SIZE];
+    //memset(ciphertext, 0, BUFFER_SIZE);
+    //recv(sockfd, ciphertext, BUFFER_SIZE, 0);
 
     // Output ciphertext to stdout
-    printf("%s\n", ciphertext);
+    //printf("%s\n", ciphertext);
 
     close(sockfd);
     return 0;
