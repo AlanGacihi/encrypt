@@ -28,8 +28,6 @@ void encrypt(char *plaintext, char *key, char *ciphertext) {
     }
 
     ciphertext[plaintext_len] = '\0'; // Null-terminate the ciphertext
-
-    printf("%s\n", ciphertext);
 }
 
 int main(int argc, char *argv[]) {
@@ -103,9 +101,8 @@ int main(int argc, char *argv[]) {
             printf("[%d] Received message from client:\n%s\n", getpid(), plaintext);
             printf("[%d] Received key from client:\n%s\n", getpid(), key);
 
-            //encrypt(plaintext, key, ciphertext);
-
-            //send(newsockfd, ciphertext, strlen(ciphertext), 0);
+            encrypt(plaintext, key, ciphertext);
+            send(newsockfd, ciphertext, strlen(ciphertext), 0);
 
             close(newsockfd);
             exit(0);

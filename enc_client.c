@@ -54,7 +54,6 @@ int main(int argc, char *argv[]) {
 
     // Remove new line character from key
     key[strcspn(key, "\n")] = '\0';
-    printf("%s\n", key);
 
     // Check for bad characters in plaintext and key
     for (int i = 0; plaintext[i] != '\0'; i++) {
@@ -102,13 +101,13 @@ int main(int argc, char *argv[]) {
     // Send combined data to enc_server
     send(sockfd, combined_data, strlen(combined_data), 0);
 
-    // Receive ciphertext from enc_server
-    // char ciphertext[BUFFER_SIZE];
-    // memset(ciphertext, 0, BUFFER_SIZE);
-    // recv(sockfd, ciphertext, BUFFER_SIZE, 0);
+    //Receive ciphertext from enc_server
+    char ciphertext[BUFFER_SIZE];
+    memset(ciphertext, 0, BUFFER_SIZE);
+    recv(sockfd, ciphertext, BUFFER_SIZE, 0);
 
     // Output ciphertext to stdout
-    //printf("%s\n", combined_data);
+    printf("%s\n", ciphertext);
 
     close(sockfd);
     return 0;
