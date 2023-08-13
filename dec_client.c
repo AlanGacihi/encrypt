@@ -58,14 +58,14 @@ int main(int argc, char *argv[]) {
     // Check for bad characters in ciphertext and key
     for (int i = 0; ciphertext[i] != '\0'; i++) {
         if ((ciphertext[i] < 'A' || ciphertext[i] > 'Z') && ciphertext[i] != ' ') {
-            fprintf(stderr, "Error: Invalid character in ciphertext.\n");
+            fprintf(stderr, "dec_client error: input contains bad characters\n");
             return 1;
         }
     }
 
     for (int i = 0; key[i] != '\0'; i++) {
         if ((key[i] < 'A' || key[i] > 'Z') && key[i] != ' ') {
-            fprintf(stderr, "Error: Invalid character in key.\n");
+            fprintf(stderr, "dec_client error: input contains bad characters\n");
             return 1;
         }
     }
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
     char combined_data[BUFFER_SIZE * 2 + 1];
     snprintf(combined_data, sizeof(combined_data), "%s.%s", ciphertext, key);
 
-    // Connect to enc_server
+    // Connect to dec_server
     int sockfd;
     struct sockaddr_in serv_addr;
 
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
     serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1"); // localhost
 
     if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-        fprintf(stderr, "Error connecting to den_server on port %d.\n", port);
+        fprintf(stderr, "Error: could not contact dec_server on port %d.\n", port);
         return 2; // Exit with error code 2 as specified
     }
 

@@ -58,14 +58,14 @@ int main(int argc, char *argv[]) {
     // Check for bad characters in plaintext and key
     for (int i = 0; plaintext[i] != '\0'; i++) {
         if ((plaintext[i] < 'A' || plaintext[i] > 'Z') && plaintext[i] != ' ') {
-            fprintf(stderr, "Error: Invalid character in plaintext.\n");
+            fprintf(stderr, "enc_client error: input contains bad characters\n");
             return 1;
         }
     }
 
     for (int i = 0; key[i] != '\0'; i++) {
         if ((key[i] < 'A' || key[i] > 'Z') && key[i] != ' ') {
-            fprintf(stderr, "Error: Invalid character in key.\n");
+            fprintf(stderr, "enc_client error: input contains bad characters\n");
             return 1;
         }
     }
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
     serv_addr.sin_addr.s_addr = inet_addr("127.0.0.2"); // localhost
 
     if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-        fprintf(stderr, "Error connecting to enc_server on port %d.\n", port);
+        fprintf(stderr, "Error: could not contact enc_server on port %d.\n", port);
         return 2; // Exit with error code 2 as specified
     }
 
