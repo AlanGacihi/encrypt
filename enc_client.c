@@ -95,6 +95,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Send plaintext and key to enc_server
+    printf("%s\n", plaintext);
     send(sockfd, plaintext, strlen(plaintext), 0);
     send(sockfd, key, strlen(key), 0);
 
