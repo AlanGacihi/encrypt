@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     }
 
     for (int i = 0; key[i] != '\0'; i++) {
-        if (key[i] < 'A' || key[i] > 'Z') {
+        if ((key[i] < 'A' || key[i] > 'Z') && key[i] != ' ') {
             fprintf(stderr, "Error: Invalid character in key.\n");
             return 1;
         }
