@@ -107,5 +107,6 @@ int main(int argc, char *argv[]) {
     printf("%s\n", plaintext);
 
     close(sockfd);
+    printf("Done\n");
     return 0;
 }
