@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
     //recv(sockfd, ciphertext, BUFFER_SIZE, 0);
 
     // Output ciphertext to stdout
-    //printf("%s\n", plaintext);
+    printf("%s\n", plaintext);
 
     close(sockfd);
     return 0;
