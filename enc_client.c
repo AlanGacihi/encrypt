@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
 
     // Remove new line character from key
     key[strcspn(key, "\n")] = '\0';
+    printf("%s\n", key);
 
     // Check for bad characters in plaintext and key
     for (int i = 0; plaintext[i] != '\0'; i++) {
@@ -107,7 +108,7 @@ int main(int argc, char *argv[]) {
     // recv(sockfd, ciphertext, BUFFER_SIZE, 0);
 
     // Output ciphertext to stdout
-    printf("%s\n", combined_data);
+    //printf("%s\n", combined_data);
 
     close(sockfd);
     return 0;
