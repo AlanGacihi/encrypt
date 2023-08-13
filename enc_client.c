@@ -98,9 +98,9 @@ int main(int argc, char *argv[]) {
     printf("%s\n", plaintext);
     int x1 = strlen(plaintext);
     int x2 = strlen(key);
-    send(sockfd, &x1, sizeof(x1));
+    send(sockfd, &x1, sizeof(x1), 0);
     send(sockfd, plaintext, strlen(plaintext), 0);
-    send(sockfd, &x2, sizeof(x2));
+    send(sockfd, &x2, sizeof(x2), 0);
     send(sockfd, key, strlen(key), 0);
 
     // Receive ciphertext from enc_server
