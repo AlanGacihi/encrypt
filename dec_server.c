@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     memset((char *)&serv_addr, 0, sizeof(serv_addr));
     portno = listening_port;
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = INADDR_ANY;
+    serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");;
     serv_addr.sin_port = htons(portno);
 
     if (bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
@@ -99,9 +99,6 @@ int main(int argc, char *argv[]) {
             ciphertext[ciphertext_length] = '\0'; // Null-terminate the plaintext
             strncpy(key, separator + 1, key_length);
             key[key_length] = '\0'; // Null-terminate the key
-
-            printf("[%d] Received message from client:\n%s\n", getpid(), ciphertext);
-            printf("[%d] Received key from client:\n%s\n", getpid(), key);
 
             decrypt(ciphertext, key, plaintext);
             send(newsockfd, plaintext, strlen(plaintext), 0);
