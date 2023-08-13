@@ -71,16 +71,31 @@ int main(int argc, char *argv[]) {
             // Child process
             close(sockfd);
 
+            char combined_data[BUFFER_SIZE * 2];
             char plaintext[BUFFER_SIZE];
             char key[BUFFER_SIZE];
             char ciphertext[BUFFER_SIZE];
 
+            memset(combined_data, 0, BUFFER_SIZE * 2);
             memset(plaintext, 0, BUFFER_SIZE);
             memset(key, 0, BUFFER_SIZE);
 
-            recv(newsockfd, plaintext, BUFFER_SIZE, 0);
+            recv(newsockfd, combined_data, BUFFER_SIZE * 2, 0);
+
+            // Split the combined data at the full stop
+            char *separator = strchr(combined_data, '.');
+            if (separator == NULL) {
+                fprintf(stderr, "[%d] Invalid combined data format.\n", getpid());
+                close(newsockfd);
+                exit(1);
+            }
+
+            // Extract plaintext and key
+            *separator = '\0'; // Replace full stop with null terminator
+            strncpy(plaintext, combined_data, BUFFER_SIZE - 1);
+            strncpy(key, separator + 1, BUFFER_SIZE - 1);
+
             printf("[%d] Received message from client:\n%s\n", getpid(), plaintext);
-            recv(newsockfd, key, BUFFER_SIZE, 0);
             printf("[%d] Received key from client:\n%s\n", getpid(), key);
 
             //encrypt(plaintext, key, ciphertext);
@@ -92,6 +107,7 @@ int main(int argc, char *argv[]) {
         } else {
             close(newsockfd);
         }
+
     }
 
     close(sockfd);

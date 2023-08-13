@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     fclose(plaintext_file);
-    
+
     // Remove new line character from plaintext
     plaintext[strcspn(plaintext, "\n")] = '\0';
 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     fclose(key_file);
-    
+
     // Remove new line character from key
     key[strcspn(key, "\n")] = '\0';
 
@@ -76,6 +76,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // Combine plaintext and key with a full stop separator
+    char combined_data[BUFFER_SIZE * 2 + 1];
+    snprintf(combined_data, sizeof(combined_data), "%s.%s", plaintext, key);
+
     // Connect to enc_server
     int sockfd;
     struct sockaddr_in serv_addr;
@@ -94,14 +98,13 @@ int main(int argc, char *argv[]) {
         return 2; // Exit with error code 2 as specified
     }
 
-    // Send plaintext and key to enc_server
-    send(sockfd, plaintext, strlen(plaintext), 0);
-    send(sockfd, key, strlen(key), 0);
+    // Send combined data to enc_server
+    send(sockfd, combined_data, strlen(combined_data), 0);
 
     // Receive ciphertext from enc_server
-    //char ciphertext[BUFFER_SIZE];
-    //memset(ciphertext, 0, BUFFER_SIZE);
-    //recv(sockfd, ciphertext, BUFFER_SIZE, 0);
+    // char ciphertext[BUFFER_SIZE];
+    // memset(ciphertext, 0, BUFFER_SIZE);
+    // recv(sockfd, ciphertext, BUFFER_SIZE, 0);
 
     // Output ciphertext to stdout
     printf("%s\n", plaintext);
