@@ -90,10 +90,15 @@ int main(int argc, char *argv[]) {
                 exit(1);
             }
 
+            // Calculate the lengths of plaintext and key
+            size_t plaintext_length = separator - combined_data;
+            size_t key_length = strlen(separator + 1);
+
             // Extract plaintext and key
-            *separator = '\0'; // Replace full stop with null terminator
-            strncpy(plaintext, combined_data, BUFFER_SIZE - 1);
-            strncpy(key, separator + 1, BUFFER_SIZE - 1);
+            strncpy(plaintext, combined_data, plaintext_length);
+            plaintext[plaintext_length] = '\0'; // Null-terminate the plaintext
+            strncpy(key, separator + 1, key_length);
+            key[key_length] = '\0'; // Null-terminate the key
 
             printf("[%d] Received message from client:\n%s\n", getpid(), plaintext);
             printf("[%d] Received key from client:\n%s\n", getpid(), key);
@@ -104,6 +109,7 @@ int main(int argc, char *argv[]) {
 
             close(newsockfd);
             exit(0);
+
         } else {
             close(newsockfd);
         }
