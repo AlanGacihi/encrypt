@@ -71,25 +71,20 @@ int main(int argc, char *argv[]) {
             // Child process
             close(sockfd);
 
-            // Verify client identity (enc_client)
-            // You'll need to implement this part
-            
-            // Receive plaintext and key from client
             char plaintext[BUFFER_SIZE];
             char key[BUFFER_SIZE];
             char ciphertext[BUFFER_SIZE];
 
             memset(plaintext, 0, BUFFER_SIZE);
             memset(key, 0, BUFFER_SIZE);
-            
-            // Receive plaintext and key using recv() from newsockfd
-            
-            // Perform encryption
+
+            recv(newsockfd, plaintext, BUFFER_SIZE, 0);
+            recv(newsockfd, key, BUFFER_SIZE, 0);
+
             encrypt(plaintext, key, ciphertext);
-            
-            // Send ciphertext back to client
-            // You'll need to use send() here
-            
+
+            send(newsockfd, ciphertext, strlen(ciphertext), 0);
+
             close(newsockfd);
             exit(0);
         } else {
