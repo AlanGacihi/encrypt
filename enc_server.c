@@ -16,14 +16,14 @@ void encrypt(char *plaintext, char *key, char *ciphertext) {
     int key_len = strlen(key);
 
     for (int i = 0; i < plaintext_len; i++) {
-        if (plaintext[i] == ' ') {
-            ciphertext[i] = ' '; // Preserve spaces
-        } else {
+        if (plaintext[i] >= 'A' && plaintext[i] <= 'Z') {
             int plain_value = plaintext[i] - 'A'; // Convert to numerical value (A=0, B=1, ...)
             int key_value = key[i % key_len] - 'A'; // Repeating key
 
             int encrypted_value = (plain_value + key_value) % 26; // Perform encryption
             ciphertext[i] = encrypted_value + 'A'; // Convert back to character
+        } else {
+            ciphertext[i] = plaintext[i]; // Preserve non-letter characters
         }
     }
 
