@@ -20,7 +20,7 @@ void encrypt(char *plaintext, char *key, char *ciphertext) {
             ciphertext[i] = ' '; // Preserve spaces
         } else {
             int plain_value = plaintext[i] - 'A'; // Convert to numerical value (A=0, B=1, ...)
-            int key_value = (key[i % key_len]) % 27 - 'A'; // Repeating key
+            int key_value = ((key[i % key_len]) % 27) - 'A'; // Repeating key
 
             int encrypted_value = (plain_value + key_value) % 26; // Perform encryption
             ciphertext[i] = encrypted_value + 'A'; // Convert back to character
