@@ -22,12 +22,12 @@ void encrypt(char *plaintext, char *key, char *ciphertext) {
 
             int encrypted_value = (plain_value + key_value) % 26; // Perform encryption
             ciphertext[i] = encrypted_value + 'A'; // Convert back to character
-            printf("%c", ciphertext[i]);
+            printf("%d, %c\n", encrypted_value, ciphertext[i]);
         } else {
             ciphertext[i] = plaintext[i]; // Preserve non-letter characters
         }
     }
-    printf("\n");
+    //printf("\n");
 
     ciphertext[plaintext_len] = '\0'; // Null-terminate the ciphertext
 }
