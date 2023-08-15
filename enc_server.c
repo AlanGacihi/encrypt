@@ -20,16 +20,22 @@ void encrypt(char *plaintext, char *key, char *ciphertext) {
             ciphertext[i] = ' '; // Preserve spaces
         } else {
             int plain_value = plaintext[i] - 'A'; // Convert to numerical value (A=0, B=1, ...)
-            int key_value = key[i % key_len] - 'A'; // Repeating key
+            int key_value;
+            
+            if (key[i % key_len] == ' ') {
+                key_value = 0; // Treat space in key as zero
+            } else {
+                key_value = key[i % key_len] - 'A';
+            }
 
             int encrypted_value = (plain_value + key_value) % 26; // Perform encryption
             ciphertext[i] = encrypted_value + 'A'; // Convert back to character
-            printf("%d, %d, %c\n", key_value, encrypted_value, ciphertext[i]);
         }
     }
 
     ciphertext[plaintext_len] = '\0'; // Null-terminate the ciphertext
 }
+
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
