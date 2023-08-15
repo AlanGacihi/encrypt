@@ -18,12 +18,16 @@ void encrypt(char *plaintext, char *key, char *ciphertext) {
     for (int i = 0; i < plaintext_len; i++) {
         if (plaintext[i] == ' ') {
             ciphertext[i] = ' '; // Preserve spaces
-        } else {
+        } else if (plaintext[i] >= 'A' && plaintext[i] <= 'Z') {
             int plain_value = plaintext[i] - 'A'; // Convert to numerical value (A=0, B=1, ...)
             int key_value = key[i % key_len] - 'A'; // Repeating key
 
-            int encrypted_value = (plain_value + key_value) % 27; // Perform encryption
+            int encrypted_value = (plain_value + key_value) % 26; // Perform encryption
             ciphertext[i] = encrypted_value + 'A'; // Convert back to character
+        } else {
+            // Handle characters that are not 'A' to 'Z' or space
+            fprintf(stderr, "Invalid character in plaintext: %c\n", plaintext[i]);
+            exit(1);
         }
     }
 
