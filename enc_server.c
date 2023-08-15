@@ -32,6 +32,7 @@ void encrypt(char *plaintext, char *key, char *ciphertext) {
     }
 
     ciphertext[plaintext_len] = '\0'; // Null-terminate the ciphertext
+    printf("%s\n", ciphertext);
 }
 
 int main(int argc, char *argv[]) {
