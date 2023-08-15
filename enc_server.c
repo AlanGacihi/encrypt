@@ -16,18 +16,17 @@ void encrypt(char *plaintext, char *key, char *ciphertext) {
     int key_len = strlen(key);
 
     for (int i = 0; i < plaintext_len; i++) {
-        if (plaintext[i] >= 'A' && plaintext[i] <= 'Z') {
+        if (plaintext[i] == ' ') {
+            ciphertext[i] = ' '; // Preserve spaces
+        } else {
             int plain_value = plaintext[i] - 'A'; // Convert to numerical value (A=0, B=1, ...)
             int key_value = key[i % key_len] - 'A'; // Repeating key
 
-            int encrypted_value = (plain_value + key_value) % 26; // Perform encryption
+            int encrypted_value = (plain_value + key_value) % 27; // Perform encryption
             ciphertext[i] = encrypted_value + 'A'; // Convert back to character
             printf("%d, %c\n", encrypted_value, ciphertext[i]);
-        } else {
-            ciphertext[i] = plaintext[i]; // Preserve non-letter characters
         }
     }
-    //printf("\n");
 
     ciphertext[plaintext_len] = '\0'; // Null-terminate the ciphertext
 }
