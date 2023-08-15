@@ -22,7 +22,7 @@ void encrypt(char *plaintext, char *key, char *ciphertext) {
             int plain_value = plaintext[i] - 'A'; // Convert to numerical value (A=0, B=1, ...)
             int key_value = key[i % key_len] - 'A'; // Repeating key
 
-            int encrypted_value = (plain_value + key_value) % 27; // Perform encryption
+            int encrypted_value = (plain_value + key_value) % 26; // Perform encryption
             ciphertext[i] = encrypted_value + 'A'; // Convert back to character
             printf("%d, %c\n", encrypted_value, ciphertext[i]);
         }
