@@ -11,26 +11,31 @@ void error(const char *msg) {
     exit(1);
 }
 
-// Decrypt ciphertext using key
-void decrypt(char *ciphertext, char *key, char *plaintext) {
+void decrypt(char *ciphertext, char *key, char *decrypted_text) {
     int ciphertext_len = strlen(ciphertext);
     int key_len = strlen(key);
 
     for (int i = 0; i < ciphertext_len; i++) {
-        // Skip spaces in the ciphertext
         if (ciphertext[i] == ' ') {
-            plaintext[i] = ' ';
-            continue;
-        }
+            decrypted_text[i] = ' '; // Preserve spaces
+        } else {
+            int encrypted_value = ciphertext[i] - 'A'; // Convert to numerical value
+            int key_value;
+            
+            if (key[i % key_len] == ' ') {
+                key_value = 0; // Treat space in key as zero
+            } else {
+                key_value = key[i % key_len] - 'A';
+            }
 
-        // Calculate modular subtraction and store in plaintext
-        int cipher_val = ciphertext[i] - 'A'; // Convert to numerical value
-        int key_val = key[i % key_len] - 'A';
-        int plain_val = (cipher_val - key_val + 27) % 27; // Add 27 to ensure positive result
-        plaintext[i] = plain_val + 'A'; // Convert back to character
+            int decrypted_value = (encrypted_value - key_value + 26) % 26; // Perform decryption
+            decrypted_text[i] = decrypted_value + 'A'; // Convert back to character
+        }
     }
-    plaintext[ciphertext_len] = '\0';
+
+    decrypted_text[ciphertext_len] = '\0'; // Null-terminate the decrypted text
 }
+
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
