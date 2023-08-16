@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Send combined data to enc_server
-    send(sockfd, combined_data, strlen(combined_data), 0);
+    //send(sockfd, combined_data, strlen(combined_data), 0);
 
     //Receive ciphertext from enc_server
     char ciphertext[BUFFER_SIZE];
