@@ -87,6 +87,8 @@ int main(int argc, char *argv[]) {
 
             recv(newsockfd, combined_data, BUFFER_SIZE * 2, 0);
 
+            printf("COMBINED: %ld\n", combined_data);
+            
             // Split the combined data at the full stop
             char *separator = strchr(combined_data, '.');
             if (separator == NULL) {
@@ -104,8 +106,6 @@ int main(int argc, char *argv[]) {
             plaintext[plaintext_length] = '\0'; // Null-terminate the plaintext
             strncpy(key, separator + 1, key_length);
             key[key_length] = '\0'; // Null-terminate the key
-
-            printf("%d\n", strlen(plaintext));
 
             encrypt(plaintext, key, ciphertext);
             send(newsockfd, ciphertext, strlen(ciphertext), 0);
