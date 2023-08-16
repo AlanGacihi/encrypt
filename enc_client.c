@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
     char combined_data[BUFFER_SIZE * 2 + 1];
     snprintf(combined_data, sizeof(combined_data), "%s.%s", plaintext, key);
 
-    printf("COMBINED: %ld\n", strlen(combined_data));
+    printf("COMBINE: %ld\n", strlen(combined_data));
 
     // Connect to enc_server
     int sockfd;
