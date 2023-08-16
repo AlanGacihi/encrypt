@@ -89,12 +89,13 @@ int main(int argc, char *argv[]) {
 
             // Receive data in a loop until all expected data is received
             size_t totalReceived = 0;
-            while (totalReceived < BUFFER_SIZE * 2) {
+            while (totalReceived < 139333) {
                 ssize_t bytesReceived = recv(newsockfd, combined_data + totalReceived, BUFFER_SIZE * 2, 0);
                 if (bytesReceived <= 0) {
                     // Handle error or connection closure
                     break;
                 }
+                printf("Received: %ld", bytesReceived);
                 totalReceived += bytesReceived;
             }
 
