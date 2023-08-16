@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
             printf("COMBINED: %ld\n", strlen(received_data));
 
             // Split the combined data at the full stop
-            char *separator = strchr(combined_data, '.');
+            char *separator = strchr(received_data, '.');
             if (separator == NULL) {
                 fprintf(stderr, "[%d] Invalid combined data format.\n", getpid());
                 close(newsockfd);
@@ -118,11 +118,11 @@ int main(int argc, char *argv[]) {
             }
 
             // Calculate the lengths of plaintext and key
-            size_t plaintext_length = separator - combined_data;
+            size_t plaintext_length = separator - received_data;
             size_t key_length = strlen(separator + 1);
 
             // Extract plaintext and key
-            strncpy(plaintext, combined_data, plaintext_length);
+            strncpy(plaintext, received_data, plaintext_length);
             plaintext[plaintext_length] = '\0'; // Null-terminate the plaintext
             strncpy(key, separator + 1, key_length);
             key[key_length] = '\0'; // Null-terminate the key
