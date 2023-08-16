@@ -76,13 +76,13 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("PLAINTEXT: %ld\n", strlen(plaintext));
+    //printf("PLAINTEXT: %ld\n", strlen(plaintext));
 
     // Combine plaintext and key with a full stop separator
     char combined_data[BUFFER_SIZE * 2 + 1];
     snprintf(combined_data, sizeof(combined_data), "%s.%s", plaintext, key);
 
-    printf("COMBINE: %ld\n", strlen(combined_data));
+    //printf("COMBINE: %ld\n", strlen(combined_data));
 
     // Connect to enc_server
     int sockfd;
