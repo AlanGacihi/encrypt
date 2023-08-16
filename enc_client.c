@@ -116,6 +116,18 @@ int main(int argc, char *argv[]) {
     memset(ciphertext, 0, BUFFER_SIZE);
     recv(sockfd, ciphertext, BUFFER_SIZE, 0);
 
+    // Receive data in a loop until all expected data is received
+    size_t totalReceived = 0;
+    size_t data_length = strlen(plaintext);
+    while (totalReceived < data_length) {
+        ssize_t bytesReceived = recv(newsockfd, ciphertext + totalReceived, data_length - totalReceived, 0);
+        if (bytesReceived <= 0) {
+            // Handle error or connection closure
+            break;
+        }
+        totalReceived += bytesReceived;
+    }
+
     // Output ciphertext to stdout
     printf("%s\n", ciphertext);
 

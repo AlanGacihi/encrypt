@@ -133,7 +133,6 @@ int main(int argc, char *argv[]) {
 
             send(newsockfd, ciphertext, strlen(ciphertext), 0);
 
-
             close(newsockfd);
             exit(0);
 
