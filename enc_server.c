@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
                     // Handle error or connection closure
                     break;
                 }
-                printf("Received: %ld", bytesReceived);
+                printf("Received: %ld\n", bytesReceived);
                 totalReceived += bytesReceived;
             }
 
