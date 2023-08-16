@@ -102,18 +102,14 @@ int main(int argc, char *argv[]) {
         return 2; // Exit with error code 2 as specified
     }
 
-    int total_sent = 0;
-    while (total_sent < strlen(combined_data)) {
-        int bytes_sent = send(sockfd, combined_data + total_sent, strlen(combined_data) - total_sent, 0);
-        if (bytes_sent == -1) {
-            // Handle error
-            break;
-        }
-        total_sent += bytes_sent;
-    }
+    // Calculate the length of the combined data
+    size_t combined_data_length = strlen(combined_data);
+
+    // Send the length of the data first
+    send(sockfd, &combined_data_length, sizeof(size_t), 0);
 
     // Send combined data to enc_server
-    //send(sockfd, combined_data, strlen(combined_data), 0);
+    send(sockfd, combined_data, strlen(combined_data), 0);
 
     //Receive ciphertext from enc_server
     char ciphertext[BUFFER_SIZE];

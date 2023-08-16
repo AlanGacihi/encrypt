@@ -87,10 +87,18 @@ int main(int argc, char *argv[]) {
 
             //char received_data[BUFFER_SIZE];
 
+            // Receive the length of the data first
+            size_t combined_data_length;
+            recv(newsockfd, &combined_data_length, sizeof(size_t), 0);
+
+            // Create a buffer to receive data
+            char received_data[combined_data_length];
+            memset(received_data, 0, combined_data_length);
+
             // Receive data in a loop until all expected data is received
             size_t totalReceived = 0;
-            while (totalReceived < 139333) {
-                ssize_t bytesReceived = recv(newsockfd, combined_data + totalReceived, BUFFER_SIZE * 2, 0);
+            while (totalReceived < combined_data_length) {
+                ssize_t bytesReceived = recv(newsockfd, received_data + totalReceived, combined_data_length, 0);
                 if (bytesReceived <= 0) {
                     // Handle error or connection closure
                     break;
@@ -99,7 +107,7 @@ int main(int argc, char *argv[]) {
                 totalReceived += bytesReceived;
             }
 
-            printf("COMBINE: %ld\n", strlen(combined_data));
+            printf("COMBINE: %ld\n", strlen(received_data));
 
             // Split the combined data at the full stop
             char *separator = strchr(combined_data, '.');
