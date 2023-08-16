@@ -128,7 +128,11 @@ int main(int argc, char *argv[]) {
             key[key_length] = '\0'; // Null-terminate the key
 
             encrypt(plaintext, key, ciphertext);
+
+            printf("Cipher: %ld\n", strlen(ciphertext));
+
             send(newsockfd, ciphertext, strlen(ciphertext), 0);
+
 
             close(newsockfd);
             exit(0);
