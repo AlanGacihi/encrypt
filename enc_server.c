@@ -105,6 +105,8 @@ int main(int argc, char *argv[]) {
             strncpy(key, separator + 1, key_length);
             key[key_length] = '\0'; // Null-terminate the key
 
+            printf("%d\n", strlen(plaintext));
+
             encrypt(plaintext, key, ciphertext);
             send(newsockfd, ciphertext, strlen(ciphertext), 0);
 
