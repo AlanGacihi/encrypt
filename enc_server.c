@@ -87,8 +87,8 @@ int main(int argc, char *argv[]) {
 
             recv(newsockfd, combined_data, BUFFER_SIZE * 2, 0);
 
-            printf("COMBINED: %ld\n", combined_data);
-            
+            printf("COMBINED: %ld\n", strlen(combined_data));
+
             // Split the combined data at the full stop
             char *separator = strchr(combined_data, '.');
             if (separator == NULL) {
