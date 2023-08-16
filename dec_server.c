@@ -76,31 +76,46 @@ int main(int argc, char *argv[]) {
             // Child process
             close(sockfd);
 
-            char combined_data[BUFFER_SIZE * 2];
             char plaintext[BUFFER_SIZE];
             char key[BUFFER_SIZE];
             char ciphertext[BUFFER_SIZE];
 
-            memset(combined_data, 0, BUFFER_SIZE * 2);
             memset(plaintext, 0, BUFFER_SIZE);
             memset(key, 0, BUFFER_SIZE);
 
-            recv(newsockfd, combined_data, BUFFER_SIZE * 2, 0);
+            // Receive the length of the data first
+            size_t combined_data_length;
+            recv(newsockfd, &combined_data_length, sizeof(size_t), 0);
 
-            // Split the combined data at the full stop
-            char *separator = strchr(combined_data, '.');
+            // Create a buffer to receive data
+            char received_data[combined_data_length];
+            memset(received_data, 0, combined_data_length);
+
+            // Receive data in a loop until all expected data is received
+            size_t totalReceived = 0;
+            while (totalReceived < combined_data_length) {
+                ssize_t bytesReceived = recv(newsockfd, received_data + totalReceived, combined_data_length - totalReceived, 0);
+                if (bytesReceived <= 0) {
+                    // Handle error or connection closure
+                    break;
+                }
+                totalReceived += bytesReceived;
+            }
+
+            // Split the received data at the full stop
+            char *separator = strchr(received_data, '.');
             if (separator == NULL) {
-                fprintf(stderr, "[%d] Invalid combined data format.\n", getpid());
+                fprintf(stderr, "[%d] Invalid received data format.\n", getpid());
                 close(newsockfd);
                 exit(1);
             }
 
             // Calculate the lengths of ciphertext and key
-            size_t ciphertext_length = separator - combined_data;
+            size_t ciphertext_length = separator - received_data;
             size_t key_length = strlen(separator + 1);
 
             // Extract ciphertext and key
-            strncpy(ciphertext, combined_data, ciphertext_length);
+            strncpy(ciphertext, received_data, ciphertext_length);
             ciphertext[ciphertext_length] = '\0'; // Null-terminate the plaintext
             strncpy(key, separator + 1, key_length);
             key[key_length] = '\0'; // Null-terminate the key

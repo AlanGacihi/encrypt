@@ -98,13 +98,30 @@ int main(int argc, char *argv[]) {
         return 2; // Exit with error code 2 as specified
     }
 
+    // Calculate the length of the combined data
+    size_t combined_data_length = strlen(combined_data);
+
+    // Send the length of the data first
+    send(sockfd, &combined_data_length, sizeof(size_t), 0);
+
     // Send combined data to dec_server
     send(sockfd, combined_data, strlen(combined_data), 0);
 
     //Receive plaintext from dec_server
     char plaintext[BUFFER_SIZE];
     memset(plaintext, 0, BUFFER_SIZE);
-    recv(sockfd, plaintext, BUFFER_SIZE, 0);
+    
+    // Receive data in a loop until all expected data is received
+    size_t totalReceived = 0;
+    size_t data_length = strlen(ciphertext);
+    while (totalReceived < data_length) {
+        ssize_t bytesReceived = recv(sockfd, plaintext + totalReceived, data_length - totalReceived, 0);
+        if (bytesReceived <= 0) {
+            // Handle error or connection closure
+            break;
+        }
+        totalReceived += bytesReceived;
+    }
 
     // Output ciphertext to stdout
     printf("%s\n", plaintext);

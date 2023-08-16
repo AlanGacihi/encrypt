@@ -76,13 +76,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    //printf("PLAINTEXT: %ld\n", strlen(plaintext));
-
     // Combine plaintext and key with a full stop separator
     char combined_data[BUFFER_SIZE * 2 + 1];
     snprintf(combined_data, sizeof(combined_data), "%s.%s", plaintext, key);
-
-    //printf("COMBINE: %ld\n", strlen(combined_data));
 
     // Connect to enc_server
     int sockfd;
@@ -114,7 +110,6 @@ int main(int argc, char *argv[]) {
     //Receive ciphertext from enc_server
     char ciphertext[BUFFER_SIZE];
     memset(ciphertext, 0, BUFFER_SIZE);
-    //recv(sockfd, ciphertext, BUFFER_SIZE, 0);
 
     // Receive data in a loop until all expected data is received
     size_t totalReceived = 0;

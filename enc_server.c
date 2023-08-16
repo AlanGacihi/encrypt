@@ -76,16 +76,12 @@ int main(int argc, char *argv[]) {
             // Child process
             close(sockfd);
 
-            char combined_data[BUFFER_SIZE * 2];
             char plaintext[BUFFER_SIZE];
             char key[BUFFER_SIZE];
             char ciphertext[BUFFER_SIZE];
 
-            memset(combined_data, 0, BUFFER_SIZE * 2);
             memset(plaintext, 0, BUFFER_SIZE);
             memset(key, 0, BUFFER_SIZE);
-
-            //char received_data[BUFFER_SIZE];
 
             // Receive the length of the data first
             size_t combined_data_length;
@@ -106,13 +102,10 @@ int main(int argc, char *argv[]) {
                 totalReceived += bytesReceived;
             }
 
-
-            printf("COMBINED: %ld\n", strlen(received_data));
-
-            // Split the combined data at the full stop
+            // Split the received data at the full stop
             char *separator = strchr(received_data, '.');
             if (separator == NULL) {
-                fprintf(stderr, "[%d] Invalid combined data format.\n", getpid());
+                fprintf(stderr, "[%d] Invalid received data format.\n", getpid());
                 close(newsockfd);
                 exit(1);
             }
@@ -128,9 +121,6 @@ int main(int argc, char *argv[]) {
             key[key_length] = '\0'; // Null-terminate the key
 
             encrypt(plaintext, key, ciphertext);
-
-            printf("Cipher: %ld\n", strlen(ciphertext));
-
             send(newsockfd, ciphertext, strlen(ciphertext), 0);
 
             close(newsockfd);
