@@ -114,13 +114,13 @@ int main(int argc, char *argv[]) {
     //Receive ciphertext from enc_server
     char ciphertext[BUFFER_SIZE];
     memset(ciphertext, 0, BUFFER_SIZE);
-    recv(sockfd, ciphertext, BUFFER_SIZE, 0);
+    //recv(sockfd, ciphertext, BUFFER_SIZE, 0);
 
     // Receive data in a loop until all expected data is received
     size_t totalReceived = 0;
     size_t data_length = strlen(plaintext);
     while (totalReceived < data_length) {
-        ssize_t bytesReceived = recv(newsockfd, ciphertext + totalReceived, data_length - totalReceived, 0);
+        ssize_t bytesReceived = recv(sockfd, ciphertext + totalReceived, data_length - totalReceived, 0);
         if (bytesReceived <= 0) {
             // Handle error or connection closure
             break;
